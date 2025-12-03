@@ -1,5 +1,16 @@
-# 📦 friday-observability
-### _Tracing, Metrics & Debugging for Multi-Agent Workflows_
+<p align="left">
+  <a href="https://github.com/theaiintegrators">
+    <img src="https://img.shields.io/badge/Friday-Ecosystem-4B8BF5" />
+  </a>
+  <img src="https://img.shields.io/badge/status-active-success" />
+  <img src="https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11-blue" />
+  <img src="https://img.shields.io/badge/license-MIT-yellow" />
+  <img src="https://img.shields.io/badge/docs-in%20progress-lightgrey" />
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" />
+</p>
+
+# 🔍 friday-observability  
+_Tracing, logging, and monitoring for multi-agent systems_
 
 Friday Observability provides **tracing, logging, and monitoring capabilities** for multi-agent workflows running on Friday Core.
 
