@@ -1,54 +1,180 @@
-# Friday Observability – Tracing, Metrics & Analytics
+# 📦 friday-observability
+### _Tracing, Metrics & Debugging for Multi-Agent Workflows_
 
-**Friday Observability** is the visibility and diagnostics module of the **Friday multi-agent integration framework**, created by **The AI Integrators**.
+Friday Observability provides **tracing, logging, and monitoring capabilities** for multi-agent workflows running on Friday Core.
 
-This module integrates tracing, logging, and analytics tools to make AI workflows:
+It enables developers and enterprises to:
 
-- 👀 **Traceable** – understand every step of agent decisions  
-- 📈 **Measurable** – capture metrics, latency, quality, and failures  
-- 🛠️ **Debuggable** – know where agents or workflows behave incorrectly  
-- 🧭 **Auditable** – provide insights required for enterprise governance  
-
----
-
-## Key Components
-
-### `tracing/`
-Integrations for tools such as:
-- Langfuse  
-- Doris  
-- OpenTelemetry (planned)  
-- Custom event emitters for n8n + Teams workflows  
-
-### `dashboards/`
-Visualization patterns and dashboards for:
-- workflow execution timelines  
-- agent interactions  
-- request/response breakdown  
-- error heatmaps  
-
-### `logging/`
-Standardized logging patterns for:
-- multi-agent workflows  
-- workflow engine hooks  
-- AI lifecycle events  
-
-### `analytics/`
-(Planned) Higher-level metrics for:
-- agent performance  
-- workflow bottlenecks  
-- evaluation + observability combined analytics  
+- Understand agent behaviour  
+- Inspect event transitions  
+- Trace workflow failures  
+- Measure execution timing  
+- Capture LLM input/output  
+- Send structured traces to observability tools (e.g., Langfuse)  
 
 ---
 
-## Purpose
-
-Friday Observability solves one of the biggest problems in enterprise AI:
-
-> **AI workflows are black boxes.  
-> Friday makes them transparent.**
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Status](https://img.shields.io/badge/Status-Under%20Development-orange.svg)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)
 
 ---
 
-Created by **Henry**  
-for **The AI Integrators**.
+## 🌟 Why Observability Matters
+
+Multi-agent systems are **complex**. Without observability:
+
+- You cannot debug routing decisions  
+- You cannot know why an agent failed  
+- You cannot detect loops or stuck workflows  
+- You cannot measure performance  
+- You cannot inspect LLM inputs and outputs  
+- You cannot iterate or improve reliability  
+
+Friday Observability solves this by offering structured tracing that integrates directly into the Friday Core orchestration loop.
+
+---
+
+## ✨ Features
+
+- **Structured event traces** (input → agent → output)  
+- **Langfuse integration**  
+- **Execution timing metrics**  
+- **Agent-level logs**  
+- **Workflow-level logs**  
+- **Attachable hooks for custom logging systems**  
+- **Minimal overhead & plug-and-play design**  
+
+---
+
+## 🧩 Architecture Overview
+
+Friday Observability hooks into the Friday Core event loop:
+
+```
+Event → Agent → Observability → Evaluation → Router → Next Agent
+```
+
+### **Core Components**
+
+#### **TraceRecorder**
+Captures structured traces of agent execution.
+
+#### **LangfuseClientWrapper**
+Sends traces, scores, and metadata to Langfuse.
+
+#### **MetricsCollector**
+Captures timing and execution statistics.
+
+#### **WorkflowLogger**
+Lightweight console/file logger for debugging.
+
+---
+
+## 📁 Repository Structure
+
+```
+friday-observability/
+  ├── friday_observability/
+  │     ├── base.py
+  │     ├── trace_recorder.py
+  │     ├── langfuse_client.py
+  │     ├── metrics.py
+  │     ├── logger.py
+  │     └── types.py
+  ├── examples/
+  ├── tests/
+  └── README.md
+```
+
+---
+
+## 🚀 Example: Logging Agent Transitions
+
+```python
+from friday import Orchestrator
+from friday_observability import TraceRecorder
+
+recorder = TraceRecorder()
+
+orchestrator = Orchestrator(agents=agents)
+orchestrator.with_observability(recorder)
+
+result = orchestrator.run("start")
+recorder.dump()  # print structured workflow trace
+```
+
+---
+
+## 🤝 Example: Integrating Langfuse
+
+```python
+from friday import Orchestrator
+from friday_observability import LangfuseClient
+
+langfuse = LangfuseClient(
+    public_key="LF_PUBLIC",
+    secret_key="LF_SECRET",
+    host="https://cloud.langfuse.com"
+)
+
+orchestrator = Orchestrator(agents=agents)
+orchestrator.with_observability(langfuse)
+
+orchestrator.run("start")
+```
+
+This automatically records:
+
+- Agent start/end  
+- Input/output payloads  
+- Execution time  
+- Errors (with stack traces)  
+- Scores (if using friday-evaluation)  
+
+---
+
+## 🔗 Works Seamlessly with Friday Core & Friday Evaluation
+
+Friday Observability works in combination with:
+
+### ✔ **Friday Core**  
+Adds tracing around each agent execution.
+
+### ✔ **Friday Evaluation**  
+Captures evaluation scores and logs them to Langfuse/trace recorder.
+
+This makes Friday a full **orchestration + evaluation + observability triangle**.
+
+```
+        ┌──────────────┐
+        │ Observability│
+        └──────▲───────┘
+               │
+ Orchestration │ Evaluation
+        ┌──────┴──────┐
+        │   Friday    │
+        └─────────────┘
+```
+
+---
+
+## 🧪 Roadmap
+
+- [ ] Export traces as JSON  
+- [ ] Visual workflow timeline UI  
+- [ ] Langfuse auto-enrichment with workflow metadata  
+- [ ] OpenTelemetry integration  
+- [ ] Agent performance metrics dashboard  
+- [ ] Error classification & fingerprints  
+
+---
+
+## 🔭 Vision
+
+Friday Observability aims to make multi-agent workflows **transparent**, **explainable**, and **debuggable**, unlocking reliable enterprise AI systems.
+
+---
+
+## 📄 License  
+MIT License
