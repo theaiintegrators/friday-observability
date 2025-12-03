@@ -3,74 +3,60 @@
     <img src="https://img.shields.io/badge/Friday-Ecosystem-4B8BF5" />
   </a>
   <img src="https://img.shields.io/badge/status-active-success" />
-  <img src="https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11-blue" />
+  <img src="https://img/shields.io/badge/python-3.9%20|%203.10%20|%203.11-blue" />
   <img src="https://img.shields.io/badge/license-MIT-yellow" />
   <img src="https://img.shields.io/badge/docs-in%20progress-lightgrey" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" />
 </p>
 
 # 🔍 friday-observability  
-_Tracing, logging, and monitoring for multi-agent systems_
+_Tracing, analytics, and introspection for enterprise multi-agent workflows_
 
-Friday Observability provides **tracing, logging, and monitoring capabilities** for multi-agent workflows running on Friday Core.
+Friday Observability provides structured tracing and workflow analytics for Friday Core.  
+It is inspired by modern observability systems used in:
 
-It enables developers and enterprises to:
+- **LangFuse-style workflow tracing**  
+- **LangSmith / DeepEval evaluation pipelines**  
+- **Microsoft Agent Framework debugging**  
+- **OpenTelemetry-style instrumentation**  
+- **MCP tool interaction tracing**  
 
-- Understand agent behaviour  
-- Inspect event transitions  
-- Trace workflow failures  
-- Measure execution timing  
-- Capture LLM input/output  
-- Send structured traces to observability tools (e.g., Langfuse)  
-
----
-
-## 📦 Installation
-
-Friday Observability will be available on PyPI soon.
-
-```bash
-pip install friday-observability   # coming soon
-```
+It enhances Friday Core with deep insights into agent behaviour, routing decisions, timing, and evaluation results.
 
 ---
 
-![License](https://img.shields.io/badge/License-MIT-blue.svg)
-![Status](https://img.shields.io/badge/Status-Under%20Development-orange.svg)
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)
+# 🌟 Why Enterprise Observability Matters
+
+Multi-agent workflows are complex networks of decisions.  
+Without observability, teams cannot:
+
+- understand why agents chose certain actions  
+- reconstruct workflow timelines  
+- debug failures or incorrect transitions  
+- measure latency or bottlenecks  
+- inspect LLM inputs and outputs  
+- track evaluation score history  
+
+Friday Observability adds **full execution transparency**, allowing teams to monitor, debug, and optimise workflows.
 
 ---
 
-## 🌟 Why Observability Matters
+# ✨ Features
 
-Multi-agent systems are **complex**. Without observability:
-
-- You cannot debug routing decisions  
-- You cannot know why an agent failed  
-- You cannot detect loops or stuck workflows  
-- You cannot measure performance  
-- You cannot inspect LLM inputs and outputs  
-- You cannot iterate or improve reliability  
-
-Friday Observability solves this by offering structured tracing that integrates directly into the Friday Core orchestration loop.
-
----
-
-## ✨ Features
-
-- **Structured event traces** (input → agent → output)  
-- **Langfuse integration**  
+- **Structured workflow traces**  
+- **LangFuse-compatible events & metadata**  
+- **Agent-level logs & routing logs**  
+- **LLM input/output recording**  
 - **Execution timing metrics**  
-- **Agent-level logs**  
-- **Workflow-level logs**  
-- **Attachable hooks for custom logging systems**  
-- **Minimal overhead & plug-and-play design**  
+- **Workflow-wide trace graphs**  
+- **Attachable observability hooks**  
+- **Low overhead & production-ready design**  
 
 ---
 
-## 🧩 Architecture Overview
+# 🏛 Architecture Overview
 
-Friday Observability hooks into the Friday Core event loop:
+Friday Observability integrates deeply with Friday Core:
 
 ```
 Event → Agent → Observability → Evaluation → Router → Next Agent
@@ -79,20 +65,20 @@ Event → Agent → Observability → Evaluation → Router → Next Agent
 ### **Core Components**
 
 #### **TraceRecorder**
-Captures structured traces of agent execution.
+Captures structured multi-agent execution traces.
 
 #### **LangfuseClientWrapper**
-Sends traces, scores, and metadata to Langfuse.
+Sends workflow metadata, timing, and evaluation results to LangFuse.
 
 #### **MetricsCollector**
-Captures timing and execution statistics.
+Captures step latency, workflow duration, and agent performance metrics.
 
 #### **WorkflowLogger**
-Lightweight console/file logger for debugging.
+Lightweight logger for debugging or on-prem deployments.
 
 ---
 
-## 📁 Repository Structure
+# 📁 Repository Structure
 
 ```
 friday-observability/
@@ -110,7 +96,7 @@ friday-observability/
 
 ---
 
-## 🚀 Example: Logging Agent Transitions
+# 🚀 Example: Logging Agent Transitions
 
 ```python
 from friday import Orchestrator
@@ -127,7 +113,7 @@ recorder.dump()  # print structured workflow trace
 
 ---
 
-## 🤝 Example: Integrating Langfuse
+# 🤝 Example: LangFuse Integration
 
 ```python
 from friday import Orchestrator
@@ -145,32 +131,25 @@ orchestrator.with_observability(langfuse)
 orchestrator.run("start")
 ```
 
-This automatically records:
+This records:
 
-- Agent start/end  
-- Input/output payloads  
-- Execution time  
-- Errors (with stack traces)  
-- Scores (if using friday-evaluation)  
+- agent start/end events  
+- inputs & outputs  
+- evaluation scores  
+- timing & latency  
+- error metadata  
+- workflow graphs  
 
 ---
 
-## 🔗 Works Seamlessly with Friday Core & Friday Evaluation
+# 🔗 Works Seamlessly with Friday Core & Friday Evaluation
 
-Friday Observability works in combination with:
-
-### ✔ **Friday Core**  
-Adds tracing around each agent execution.
-
-### ✔ **Friday Evaluation**  
-Captures evaluation scores and logs them to Langfuse/trace recorder.
-
-This makes Friday a full **orchestration + evaluation + observability triangle**.
+Friday Observability completes the **Orchestration + Evaluation + Observability triad**:
 
 ```
-        ┌──────────────┐
-        │ Observability│
-        └──────▲───────┘
+        ┌──────────────────┐
+        │   Observability  │
+        └──────▲───────────┘
                │
  Orchestration │ Evaluation
         ┌──────┴──────┐
@@ -180,22 +159,28 @@ This makes Friday a full **orchestration + evaluation + observability triangle**
 
 ---
 
-## 🧪 Roadmap
+# 🧪 Roadmap
 
-- [ ] Export traces as JSON  
-- [ ] Visual workflow timeline UI  
-- [ ] Langfuse auto-enrichment with workflow metadata  
-- [ ] OpenTelemetry integration  
-- [ ] Agent performance metrics dashboard  
-- [ ] Error classification & fingerprints  
-
----
-
-## 🔭 Vision
-
-Friday Observability aims to make multi-agent workflows **transparent**, **explainable**, and **debuggable**, unlocking reliable enterprise AI systems.
+- JSON trace export  
+- LangFuse auto-enrichment  
+- Visual workflow timeline UI  
+- OpenTelemetry integration  
+- Real-time workflow dashboards  
+- Error fingerprinting & classification  
 
 ---
 
-## 📄 License  
+# 🔭 Vision
+
+Friday Observability aims to make large multi-agent workflows:
+
+- transparent  
+- debuggable  
+- evaluable  
+- auditable  
+- safe for enterprise deployment  
+
+---
+
+# 📄 License  
 MIT License
