@@ -1,0 +1,175 @@
+{
+  "uid": "friday-observability",
+  "title": "Friday Observability Dashboard",
+  "tags": ["friday", "observability", "metrics"],
+  "timezone": "browser",
+  "schemaVersion": 42,
+  "version": 1,
+  "refresh": "5s",
+  "editable": true,
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Total Agent Requests",
+      "id": 1,
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 3 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "sum(friday_agent_requests_total)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Active Agents",
+      "id": 2,
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 3 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "count(friday_agent_requests_created)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "p50 Latency (seconds)",
+      "id": 3,
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 3 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "quantile_over_time(0.5, friday_agent_latency[5m])",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Error Rate (errors/sec)",
+      "id": 4,
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 3 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "sum(rate(friday_agent_errors_total[5m]))",
+          "refId": "A"
+        }
+      ]
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Agent Throughput (Requests/sec)",
+      "id": 5,
+      "gridPos": { "x": 0, "y": 3, "w": 24, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "sum by(agent) (rate(friday_agent_requests_total[5m]))",
+          "legendFormat": "{{agent}}",
+          "refId": "A"
+        }
+      ]
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Agent Latency (p50/p95/p99)",
+      "id": 6,
+      "gridPos": { "x": 0, "y": 11, "w": 24, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "quantile_over_time(0.5, friday_agent_latency[5m])",
+          "legendFormat": "p50",
+          "refId": "A"
+        },
+        {
+          "expr": "quantile_over_time(0.95, friday_agent_latency[5m])",
+          "legendFormat": "p95",
+          "refId": "B"
+        },
+        {
+          "expr": "quantile_over_time(0.99, friday_agent_latency[5m])",
+          "legendFormat": "p99",
+          "refId": "C"
+        }
+      ]
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Error Rate Over Time",
+      "id": 7,
+      "gridPos": { "x": 0, "y": 19, "w": 12, "h": 7 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "sum(rate(friday_agent_errors_total[5m]))",
+          "refId": "A"
+        }
+      ]
+    },
+
+    {
+      "type": "timeseries",
+      "title": "CPU Usage (seconds/sec)",
+      "id": 8,
+      "gridPos": { "x": 12, "y": 19, "w": 12, "h": 7 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "rate(process_cpu_seconds_total[5m])",
+          "refId": "A"
+        }
+      ]
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Memory Usage (MB)",
+      "id": 9,
+      "gridPos": { "x": 0, "y": 26, "w": 12, "h": 7 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "process_resident_memory_bytes / 1024 / 1024",
+          "refId": "A"
+        }
+      ]
+    },
+
+    {
+      "type": "table",
+      "title": "Per-Agent Performance",
+      "id": 10,
+      "gridPos": { "x": 12, "y": 26, "w": 12, "h": 7 },
+      "datasource": { "type": "prometheus", "uid": "FRIDAY-PROM" },
+      "targets": [
+        {
+          "expr": "friday_agent_requests_total",
+          "legendFormat": "{{agent}} requests",
+          "refId": "A"
+        },
+        {
+          "expr": "friday_agent_latency",
+          "legendFormat": "{{agent}} latency",
+          "refId": "B"
+        },
+        {
+          "expr": "friday_agent_errors_total",
+          "legendFormat": "{{agent}} errors",
+          "refId": "C"
+        }
+      ]
+    }
+  ]
+}

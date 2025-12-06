@@ -1,186 +1,240 @@
+
 <p align="left">
   <a href="https://github.com/theaiintegrators">
     <img src="https://img.shields.io/badge/Friday-Ecosystem-4B8BF5" />
   </a>
   <img src="https://img.shields.io/badge/status-active-success" />
-  <img src="https://img/shields.io/badge/python-3.9%20|%203.10%20|%203.11-blue" />
+  <img src="https://img.shields.io/badge/python-3.10%20|%203.11-blue" />
   <img src="https://img.shields.io/badge/license-MIT-yellow" />
-  <img src="https://img.shields.io/badge/docs-in%20progress-lightgrey" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" />
 </p>
 
-# 🔍 friday-observability  
-_Tracing, analytics, and introspection for enterprise multi-agent workflows_
+# 🔍 Friday Observability  
+### _Metrics, Insights, and Monitoring for Multi-Agent AI Systems_
 
-Friday Observability provides structured tracing and workflow analytics for Friday Core.  
-It is inspired by modern observability systems used in:
+Friday Observability is a lightweight, open-source observability layer designed for **AI agents**, **LLM toolchains**, and **multi-agent orchestration systems**.
 
-- **LangFuse-style workflow tracing**  
-- **LangSmith / DeepEval evaluation pipelines**  
-- **Microsoft Agent Framework debugging**  
-- **OpenTelemetry-style instrumentation**  
-- **MCP tool interaction tracing**  
+This module provides **real-time metrics**, **agent analytics**, and **runtime introspection** through a clean, reproducible **Prometheus + Grafana** monitoring stack.
 
-It enhances Friday Core with deep insights into agent behaviour, routing decisions, timing, and evaluation results.
+It is built as part of the **Friday Ecosystem**, but can be used independently for any agent-based or LLM-based system.
 
 ---
 
-# 🌟 Why Enterprise Observability Matters
+# 🌟 Why Observability for Agents?
 
-Multi-agent workflows are complex networks of decisions.  
+Modern AI systems behave like distributed, dynamic graphs of decisions:
+
+- Agents call tools  
+- Tools call models  
+- Models generate reasoning chains  
+- Supervisors route tasks  
+- Autonomous decisions emerge  
+
 Without observability, teams cannot:
 
-- understand why agents chose certain actions  
-- reconstruct workflow timelines  
-- debug failures or incorrect transitions  
-- measure latency or bottlenecks  
-- inspect LLM inputs and outputs  
-- track evaluation score history  
+- See what agents are doing  
+- Measure performance  
+- Debug unexpected routing  
+- Identify latency bottlenecks  
+- Detect failing agents  
+- Benchmark quality  
 
-Friday Observability adds **full execution transparency**, allowing teams to monitor, debug, and optimise workflows.
+Friday Observability solves this with a **fully open-source**, **dockerized**, **plug-and-play** monitoring stack.
 
 ---
 
 # ✨ Features
 
-- **Structured workflow traces**  
-- **LangFuse-compatible events & metadata**  
-- **Agent-level logs & routing logs**  
-- **LLM input/output recording**  
-- **Execution timing metrics**  
-- **Workflow-wide trace graphs**  
-- **Attachable observability hooks**  
-- **Low overhead & production-ready design**  
+### ✅ Real-time Agent Metrics
+Track per-agent:
+
+- Request rate  
+- Latency (p50 / p95 / p99)  
+- Error rate  
+- Throughput  
+- Live activity timeline  
+
+### ✅ Beautiful Grafana Dashboards
+Out-of-the-box dashboards:
+
+- **Friday Overview Dashboard**  
+- **Agent Deep-Dive Dashboard**  
+
+Both load automatically on Docker startup.
+
+### ✅ Prometheus Integration
+A tiny Python emitter exposes:
+
+```
+/metrics
+```
+
+…allowing Prometheus to scrape structured agent metrics.
+
+### ✅ Fully Reproducible Environment
+Anyone can simply run:
+
+```
+docker compose up -d
+```
+
+…and immediately get:
+
+- Prometheus running  
+- Grafana running  
+- Datasource auto-provisioned  
+- Dashboards auto-provisioned  
+- Metrics flowing in real time  
+
+### ✔ No manual setup  
+### ✔ No UID mismatch  
+### ✔ No hidden configuration  
 
 ---
 
 # 🏛 Architecture Overview
 
-Friday Observability integrates deeply with Friday Core:
-
 ```
-Event → Agent → Observability → Evaluation → Router → Next Agent
+┌──────────────┐      ┌────────────────┐      ┌───────────────┐
+│ Agent System │ ───► │ Metrics Emitter│ ───► │  Prometheus   │
+└──────────────┘      └────────────────┘      └───────┬───────┘
+                                                      │
+                                                      ▼
+                                                ┌────────────┐
+                                                │  Grafana   │
+                                                │ Dashboards │
+                                                └────────────┘
 ```
 
-### **Core Components**
-
-#### **TraceRecorder**
-Captures structured multi-agent execution traces.
-
-#### **LangfuseClientWrapper**
-Sends workflow metadata, timing, and evaluation results to LangFuse.
-
-#### **MetricsCollector**
-Captures step latency, workflow duration, and agent performance metrics.
-
-#### **WorkflowLogger**
-Lightweight logger for debugging or on-prem deployments.
+Friday Observability does **not** require any private Friday code.  
+It simply listens to metrics and visualizes them.
 
 ---
 
-# 📁 Repository Structure
+# 📦 Repository Structure
 
 ```
-friday-observability/
-  ├── friday_observability/
-  │     ├── base.py
-  │     ├── trace_recorder.py
-  │     ├── langfuse_client.py
-  │     ├── metrics.py
-  │     ├── logger.py
-  │     └── types.py
-  ├── examples/
-  ├── tests/
+friday-observability-public/
+  ├── docker-compose.yml
+  ├── prometheus.yml
+  ├── emit_metrics.py
+  ├── grafana/
+  │     ├── provisioning/
+  │     │      ├── dashboards.yml
+  │     │      └── datasources.yml
+  │     └── dashboards/
+  │            ├── demo_dashboard.json
+  │            └── agent_deep_dive.json
+  ├── LICENSE
   └── README.md
 ```
 
 ---
 
-# 🚀 Example: Logging Agent Transitions
+# 🚀 Quick Start
 
-```python
-from friday import Orchestrator
-from friday_observability import TraceRecorder
+### Clone the repo
 
-recorder = TraceRecorder()
-
-orchestrator = Orchestrator(agents=agents)
-orchestrator.with_observability(recorder)
-
-result = orchestrator.run("start")
-recorder.dump()  # print structured workflow trace
 ```
+git clone https://github.com/theaiintegrators/friday-observability
+cd friday-observability
+```
+
+### Start the observability stack
+
+```
+docker compose up -d
+```
+
+### Open Grafana  
+→ http://localhost:3000  
+→ Username: **admin**  
+→ Password: **admin**
+
+You will see **two dashboards already working**, powered by live metrics.
 
 ---
 
-# 🤝 Example: LangFuse Integration
+# 📊 Dashboard Highlights
 
-```python
-from friday import Orchestrator
-from friday_observability import LangfuseClient
+## 1️⃣ Friday Overview Dashboard  
+Shows system-wide health:
 
-langfuse = LangfuseClient(
-    public_key="LF_PUBLIC",
-    secret_key="LF_SECRET",
-    host="https://cloud.langfuse.com"
-)
+- Total requests  
+- Active agents  
+- Error rate  
+- Real-time throughput  
+- Latency over time  
+- CPU & Memory signals  
 
-orchestrator = Orchestrator(agents=agents)
-orchestrator.with_observability(langfuse)
+## 2️⃣ Agent Deep-Dive Dashboard  
+Detailed visibility by agent:
 
-orchestrator.run("start")
-```
+- Requests per second  
+- p50 / p95 / p99 latency  
+- Error breakdown  
+- Slowest agents  
+- High-volume agents  
+- Combined performance table  
 
-This records:
-
-- agent start/end events  
-- inputs & outputs  
-- evaluation scores  
-- timing & latency  
-- error metadata  
-- workflow graphs  
+These dashboards auto-load on container startup.
 
 ---
 
-# 🔗 Works Seamlessly with Friday Core & Friday Evaluation
+# 🧩 Metric Endpoints
 
-Friday Observability completes the **Orchestration + Evaluation + Observability triad**:
+The metrics emitter produces Prometheus metrics such as:
 
 ```
-        ┌──────────────────┐
-        │   Observability  │
-        └──────▲───────────┘
-               │
- Orchestration │ Evaluation
-        ┌──────┴──────┐
-        │   Friday    │
-        └─────────────┘
+friday_agent_requests_total{agent="SearchAgent"} 42
+friday_agent_latency{agent="MathAgent"} 0.12
+friday_agent_errors_total{agent="RAGAgent"} 1
 ```
+
+You can extend `emit_metrics.py` to track additional custom signals.
+
+---
+
+# 🛡️ Safety: What This Repo Does *Not* Include
+
+This public version **does not include**:
+
+- Private Friday Core logic  
+- Proprietary agent orchestration code  
+- MS Agent Framework integrations  
+- Internal evaluation pipelines  
+- Any non-public IP  
+
+Only **the observability scaffolding** is provided.
+
+This ensures the repo is:
+
+- Safe  
+- Open-source friendly  
+- Fully reproducible  
+- Technically impressive  
+
+…but **without exposing private Friday implementation**.
 
 ---
 
 # 🧪 Roadmap
 
-- JSON trace export  
-- LangFuse auto-enrichment  
-- Visual workflow timeline UI  
-- OpenTelemetry integration  
-- Real-time workflow dashboards  
-- Error fingerprinting & classification  
+- OTEL / Trace ingestion  
+- Workflow timeline visualization  
+- Log aggregation  
+- RAG performance metrics  
+- Anomaly detection  
+- LLM token & cost analytics  
 
 ---
 
-# 🔭 Vision
-
-Friday Observability aims to make large multi-agent workflows:
-
-- transparent  
-- debuggable  
-- evaluable  
-- auditable  
-- safe for enterprise deployment  
+# 🤝 Contributing  
+PRs are welcome!  
+Friday Observability aims to set a standard for **AI agent observability**.
 
 ---
 
 # 📄 License  
 MIT License
+
