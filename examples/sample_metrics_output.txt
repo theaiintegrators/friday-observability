@@ -1,0 +1,4 @@
+friday_agent_requests_total{agent="SearchAgent"} 12
+friday_agent_requests_total{agent="MathAgent"} 7
+friday_agent_latency{agent="SearchAgent"} 0.48
+friday_agent_latency{agent="MathAgent"} 0.63

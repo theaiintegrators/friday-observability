@@ -1,0 +1,7 @@
+{
+  "trace_id": "12345",
+  "steps": [
+    {"node": "search", "status": "ok"},
+    {"node": "math", "status": "ok"}
+  ]
+}

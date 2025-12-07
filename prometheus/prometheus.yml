@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 2s
+
+scrape_configs:
+  - job_name: "friday_emitter"
+    static_configs:
+      - targets: ["emitter:8000"]
