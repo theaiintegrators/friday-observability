@@ -24,6 +24,12 @@ integration for:
 
 ------------------------------------------------------------------------
 
+## 📘 Friday Observability
+
+![Friday Observability](./docs/02-public-friday-observability.png)
+
+------------------------------------------------------------------------
+
 ## ✨ Features
 
 -   Real-time Prometheus metrics
