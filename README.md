@@ -31,6 +31,7 @@ integration for:
 ## 📘 Friday Observability
 
 ![Friday Observability](./docs/02-public-friday-observability.png)
+![Friday Observability](./docs/public-friday-observability.png)
 
 ------------------------------------------------------------------------
 
